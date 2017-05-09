@@ -2,7 +2,9 @@ package cm.fruitshop
 
 object FruitShop {
   type Item = String
-  def computeListPrice(prices: Map[Item, Double], items: List[Item]) = {
+  type Price = BigDecimal
+
+  def computeListPrice(prices: Map[Item, Price], items: List[Item]) = {
     items.map(prices).sum
   }
 }

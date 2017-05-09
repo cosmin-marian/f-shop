@@ -1,5 +1,6 @@
 package cm.fruitshop
 
+import cm.fruitshop.FruitShop.{Item, Price}
 import org.scalatest.prop.TableDrivenPropertyChecks
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -7,12 +8,12 @@ class FruitShopSpec extends FlatSpec with Matchers with TableDrivenPropertyCheck
   val orangePrice = 0.25
   val applePrice = 0.6
 
-  val prices: Map[FruitShop.Item, Double] = Map(
+  val prices: Map[Item, Price] = Map(
     "orange" → orangePrice,
     "apple" → applePrice
   )
 
-  val examples = Table[List[FruitShop.Item], Double](
+  val examples = Table[List[Item], Price](
     ("Items", "Total Price"),
     List() → 0.0,
     List("apple") → applePrice,
