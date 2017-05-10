@@ -12,7 +12,7 @@ object FruitShop {
     offers.map(_.apply(prices, items)).sum
   }
 
-  def computeWithOffers(offers: List[Offer], prices: Map[Item, Price], items: List[Item]) = {
+  def computePriceWithOffers(offers: List[Offer], prices: Map[Item, Price], items: List[Item]) = {
     computeListPrice(prices, items) - computeDeductions(offers, prices, items)
   }
 }

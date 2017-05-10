@@ -47,7 +47,7 @@ class FruitShopSpec extends FlatSpec with Matchers with TableDrivenPropertyCheck
 
   it should "compute total price with offers" in {
     forAll(examplesWithOffer) { case (items, totalPrice) ⇒
-      FruitShop.computeWithOffers(offers, prices, items) shouldEqual totalPrice
+      FruitShop.computePriceWithOffers(offers, prices, items) shouldEqual totalPrice
     }
   }
 

@@ -3,9 +3,10 @@ package cm.fruitshop
 import cm.fruitshop.FruitShop.{Item, Price}
 
 /**
-  * Simple impelentation of an Offer that, given a list of items computes a deduction
+  * Simple implementation of an Offer that, given a list of items computes a deduction
   * that needs to be applied.
-  * This solution assumes that the offers can be applied independently
+  * This solution assumes that the offers can be applied independently, i.e. the order in each
+  * they are applied is not important
   */
 trait Offer {
   def apply(prices: Map[Item, Price], items: List[Item]): Price
