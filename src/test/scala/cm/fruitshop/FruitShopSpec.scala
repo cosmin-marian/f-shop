@@ -8,10 +8,22 @@ class FruitShopSpec extends FlatSpec with Matchers with TableDrivenPropertyCheck
 
   val orangePrice: Price = 0.25
   val applePrice: Price = 0.6
+  val bananaPrice: Price = BigDecimal("0.20")
 
   val prices: Map[Item, Price] = Map(
     "orange" → orangePrice,
-    "apple" → applePrice
+    "apple" → applePrice,
+    "banana" → bananaPrice
+  )
+
+  val simpleOffers = List(
+    new OfferMForPriceOfN("orange", 3, 2),
+    new OfferMForPriceOfN("apple", 2, 1)
+  )
+
+  val mixedOffers = List(
+    new OfferMForPriceOfN("orange", 3, 2),
+    new Offer2ForPriceOf1Mixed("apple", "banana")
   )
 
   val examples = Table[List[Item], Price](
@@ -26,14 +38,8 @@ class FruitShopSpec extends FlatSpec with Matchers with TableDrivenPropertyCheck
   "Fruit shop" should "compute the total price" in {
     forAll(examples) { case (items, totalPrice) ⇒
       FruitShop.computeListPrice(prices, items) shouldEqual totalPrice
-
     }
   }
-
-  val offers = List(
-    new OfferMForPriceOfN("apple", 2, 1),
-    new OfferMForPriceOfN("orange", 3, 2)
-  )
 
   val examplesWithOffer = Table[List[Item], Price](
     ("Items", "Total Price With Offers"),
@@ -47,9 +53,25 @@ class FruitShopSpec extends FlatSpec with Matchers with TableDrivenPropertyCheck
 
   it should "compute total price with offers" in {
     forAll(examplesWithOffer) { case (items, totalPrice) ⇒
-      FruitShop.computePriceWithOffers(offers, prices, items) shouldEqual totalPrice
+      FruitShop.computePriceWithOffers(simpleOffers, prices, items) shouldEqual totalPrice
     }
   }
 
+  val exampleStep3 = Table[List[Item], Price](
+    ("Items", "Total Price With Offers"),
+    List() → 0.0,
+    List("apple") → applePrice,
+    List("orange") → orangePrice,
+    List("apple", "apple") -> applePrice,
+    List("apple", "banana") -> applePrice,
+    List("apple", "apple", "banana", "banana") -> (2 * applePrice),
+    List("apple", "banana", "banana", "banana") -> (applePrice + bananaPrice)
+  )
 
+  it should "compute the total price with offers" in {
+    forAll(exampleStep3) {
+      case (items, totalPrice) ⇒
+        FruitShop.computePriceWithOffers(mixedOffers, prices, items) shouldEqual totalPrice
+    }
+  }
 }
